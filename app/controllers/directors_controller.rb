@@ -36,4 +36,44 @@ class DirectorsController < ApplicationController
 
     render({ :template => "director_templates/eldest" })
   end
+
+  def insert
+    director = Director.new
+    director.name = params.fetch("name")
+    director.dob = params.fetch("dob")
+    director.bio = params.fetch("bio")
+    director.image = params.fetch("image")
+
+    if director.save
+      redirect_to("/directors", { :notice => "Director added successfully." })
+    else
+      redirect_to("/insert_director", { :alert => "Failed to add director." })
+    end
+  end
+
+  def modify
+    the_id = params.fetch("director_id")
+    director = Director.where({ :id => the_id }).first
+    director.name = params.fetch("query_name")
+    director.dob = params.fetch("query_dob")
+    director.bio = params.fetch("query_bio")
+    director.image = params.fetch("query_image")
+
+    if director.save
+      redirect_to("/directors/#{director.id}", { :notice => "Director updated successfully." })
+    else
+      redirect_to("/modify_director/#{director.id}", { :alert => "Failed to update director." })
+    end
+  end
+
+  def delete
+    the_id = params.fetch("path_id")
+    director = Director.where({ :id => the_id }).first
+
+    if director.destroy
+      redirect_to("/directors", { :notice => "Director deleted successfully." })
+    else
+      redirect_to("/directors", { :alert => "Failed to delete director." })
+    end
+  end
 end
