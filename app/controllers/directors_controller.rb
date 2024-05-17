@@ -39,10 +39,10 @@ class DirectorsController < ApplicationController
 
   def insert
     director = Director.new
-    director.name = params.fetch("name")
-    director.dob = params.fetch("dob")
-    director.bio = params.fetch("bio")
-    director.image = params.fetch("image")
+    director.name = params.fetch("query_name")
+    director.dob = params.fetch("query_dob")
+    director.bio = params.fetch("query_bio")
+    director.image = params.fetch("query_image")
 
     if director.save
       redirect_to("/directors", { :notice => "Director added successfully." })
@@ -52,7 +52,7 @@ class DirectorsController < ApplicationController
   end
 
   def modify
-    the_id = params.fetch("director_id")
+    the_id = params.fetch("path_id")
     director = Director.where({ :id => the_id }).first
     director.name = params.fetch("query_name")
     director.dob = params.fetch("query_dob")
